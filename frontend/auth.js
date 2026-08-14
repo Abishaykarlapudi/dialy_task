@@ -10,12 +10,22 @@ const API_BASE = '/api';
 let currentUser = null;
 
 /**
- * Initialize Authentication Module - ALWAYS shows Login / Register page first
+ * Initialize Authentication Module - Restores user session if logged in, otherwise shows Login/Register page
  */
 function initAuth() {
-  currentUser = null;
-  localStorage.removeItem(CURRENT_USER_KEY);
-  showAuthView();
+  const savedUser = localStorage.getItem(CURRENT_USER_KEY);
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      showDashboardView();
+      onUserAuthenticated(currentUser);
+    } catch (e) {
+      console.error('Failed to parse saved user session', e);
+      showAuthView();
+    }
+  } else {
+    showAuthView();
+  }
 }
 
 /**

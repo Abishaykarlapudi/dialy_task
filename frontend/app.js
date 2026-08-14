@@ -463,6 +463,7 @@ async function handleInlineTaskSubmit(event) {
   document.getElementById('inline-title').value = '';
   showToast(taskType === 'daily' ? "Daily habit created! 🔥" : "Task added for " + targetDate, "success");
   refreshDashboard();
+  return false;
 }
 
 /**
