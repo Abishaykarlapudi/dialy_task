@@ -20,8 +20,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'taskpulse_secret_key_2026';
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files
-app.use(express.static(path.join(__dirname)));
+// Serve static frontend files from ../frontend directory
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Connect to MongoDB Atlas
 mongoose.connect(MONGODB_URI)
@@ -221,6 +221,11 @@ app.post('/api/logs', async (req, res) => {
     console.error('Save log error:', err);
     res.status(500).json({ error: 'Failed to save completion log' });
   }
+});
+
+// Catch-all route to serve frontend index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 // Start Server

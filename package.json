@@ -1,27 +1,13 @@
 {
-  "name": "dialy-task-tracker",
+  "name": "dialy-task-tracker-root",
   "version": "1.0.0",
-  "description": "Daily Task & Habit Tracker with MongoDB, Interactive Calendar, and Streak Engine",
-  "main": "server.js",
+  "description": "Daily Task & Habit Tracker - Separated Frontend and Backend Architecture",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && node --watch server.js",
+    "install-all": "cd backend && npm install"
   },
-  "keywords": [
-    "task-tracker",
-    "habit-streak",
-    "calendar",
-    "mongodb",
-    "express"
-  ],
+  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.3.1"
-  }
+  "license": "ISC"
 }
