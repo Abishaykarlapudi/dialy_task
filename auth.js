@@ -10,22 +10,12 @@ const API_BASE = '/api';
 let currentUser = null;
 
 /**
- * Initialize Authentication Module
+ * Initialize Authentication Module - ALWAYS shows Login / Register page first
  */
 function initAuth() {
-  const savedUser = localStorage.getItem(CURRENT_USER_KEY);
-  if (savedUser) {
-    try {
-      currentUser = JSON.parse(savedUser);
-      showDashboardView();
-      onUserAuthenticated(currentUser);
-    } catch (e) {
-      console.error('Failed to parse saved user session', e);
-      showAuthView();
-    }
-  } else {
-    showAuthView();
-  }
+  currentUser = null;
+  localStorage.removeItem(CURRENT_USER_KEY);
+  showAuthView();
 }
 
 /**
@@ -193,7 +183,7 @@ function loginAsGuest() {
 }
 
 /**
- * Set active user & save session
+ * Set active user & show dashboard ONLY after successful login/registration
  */
 function setCurrentUser(user) {
   currentUser = user;
@@ -212,14 +202,24 @@ function handleLogout() {
   showToast('You have been logged out.', 'info');
 }
 
+/**
+ * Force Auth View Visible, Dashboard Hidden
+ */
 function showAuthView() {
-  document.getElementById('auth-section').classList.remove('hidden');
-  document.getElementById('dashboard-section').classList.add('hidden');
+  const authSection = document.getElementById('auth-section');
+  const dashSection = document.getElementById('dashboard-section');
+  if (authSection) authSection.classList.remove('hidden');
+  if (dashSection) dashSection.classList.add('hidden');
 }
 
+/**
+ * Force Dashboard View Visible, Auth Hidden
+ */
 function showDashboardView() {
-  document.getElementById('auth-section').classList.add('hidden');
-  document.getElementById('dashboard-section').classList.remove('hidden');
+  const authSection = document.getElementById('auth-section');
+  const dashSection = document.getElementById('dashboard-section');
+  if (authSection) authSection.classList.add('hidden');
+  if (dashSection) dashSection.classList.remove('hidden');
 }
 
 function getCurrentUser() {
