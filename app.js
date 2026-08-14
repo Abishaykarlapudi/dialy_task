@@ -219,7 +219,8 @@ async function toggleTaskCompletion(taskId, dateKey) {
   refreshDashboard();
 
   const modal = document.getElementById('date-detail-modal');
-  if (modal && !modal.classList.contains('hidden') && selectedExpandedDateKey === dateKey) {
+  const activeKey = typeof window.selectedExpandedDateKey !== 'undefined' ? window.selectedExpandedDateKey : null;
+  if (modal && !modal.classList.contains('hidden') && activeKey === dateKey) {
     renderExpandedDateTasks(dateKey);
   }
 }
@@ -295,29 +296,33 @@ function openAddTaskModal(defaultType = 'specific', targetDate = null) {
   const form = document.getElementById('add-task-form');
   const dateInput = document.getElementById('task-date');
 
-  form.reset();
+  if (form) form.reset();
 
   const radioSpecific = document.getElementById('radio-type-specific');
   const radioDaily = document.getElementById('radio-type-daily');
 
   if (defaultType === 'daily') {
-    radioDaily.checked = true;
-    if (titleEl) titleEl.textContent = "Add Daily Habit";
+    if (radioDaily) radioDaily.checked = true;
+    if (titleEl) titleEl.textContent = "Add Daily Task (Habit)";
   } else {
-    radioSpecific.checked = true;
-    if (titleEl) titleEl.textContent = "Add Task for Date";
+    if (radioSpecific) radioSpecific.checked = true;
+    if (titleEl) titleEl.textContent = "Add Task for Specific Date";
   }
 
-  const defaultDateStr = targetDate || selectedExpandedDateKey || formatDateKey(new Date());
+  const todayStr = (typeof formatDateKey === 'function') ? formatDateKey(new Date()) : new Date().toISOString().split('T')[0];
+  const activeSelectedKey = (typeof window.selectedExpandedDateKey !== 'undefined' && window.selectedExpandedDateKey) ? window.selectedExpandedDateKey : todayStr;
+  const defaultDateStr = targetDate || activeSelectedKey || todayStr;
+
   if (dateInput) dateInput.value = defaultDateStr;
 
   toggleDateInputVisibility();
-  modal.classList.remove('hidden');
+  if (modal) modal.classList.remove('hidden');
 }
 
 function openTaskFormForSelectedDate(type) {
   closeDateModal();
-  openAddTaskModal(type, selectedExpandedDateKey);
+  const selKey = typeof window.selectedExpandedDateKey !== 'undefined' ? window.selectedExpandedDateKey : null;
+  openAddTaskModal(type, selKey);
 }
 
 function closeTaskModal() {
@@ -384,8 +389,9 @@ async function handleSaveTask(event) {
 
   refreshDashboard();
 
-  if (selectedExpandedDateKey) {
-    openDateModal(selectedExpandedDateKey);
+  const selModalKey = typeof window.selectedExpandedDateKey !== 'undefined' ? window.selectedExpandedDateKey : null;
+  if (selModalKey) {
+    openDateModal(selModalKey);
   }
 }
 

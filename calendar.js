@@ -3,9 +3,12 @@
  */
 
 // Currently selected calendar month date state
-let currentViewDate = new Date();
+window.currentViewDate = new Date();
+var currentViewDate = window.currentViewDate;
+
 // Currently expanded date in date detail modal (formatted YYYY-MM-DD)
-let selectedExpandedDateKey = formatDateKey(new Date());
+window.selectedExpandedDateKey = typeof formatDateKey === 'function' ? formatDateKey(new Date()) : new Date().toISOString().split('T')[0];
+var selectedExpandedDateKey = window.selectedExpandedDateKey;
 
 const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
@@ -152,6 +155,7 @@ function goToToday() {
  * Handle Date Click: Opens Date Expansion Modal (REQ 6 & 7)
  */
 function handleDateCellClick(dateKey) {
+  window.selectedExpandedDateKey = dateKey;
   selectedExpandedDateKey = dateKey;
   openDateModal(dateKey);
 }
