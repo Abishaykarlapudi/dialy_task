@@ -35,7 +35,7 @@
         </div>
 
         <!-- LOGIN FORM -->
-        <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+        <form id="login-form" class="auth-form active" onsubmit="handleLogin(event); return false;">
           <div class="input-group">
             <label for="login-email">Email or Username</label>
             <div class="input-wrapper">
@@ -62,7 +62,7 @@
         </form>
 
         <!-- REGISTER FORM -->
-        <form id="register-form" class="auth-form hidden-form" onsubmit="handleRegister(event)">
+        <form id="register-form" class="auth-form hidden-form" onsubmit="handleRegister(event); return false;">
           <div class="input-group">
             <label for="reg-name">Full Name</label>
             <div class="input-wrapper">
@@ -196,7 +196,7 @@
           <span class="subtext">Add a Day Task or Daily Habit right here!</span>
         </div>
 
-        <form id="inline-add-form" onsubmit="handleInlineTaskSubmit(event)" class="inline-form-grid">
+        <form id="inline-add-form" onsubmit="handleInlineTaskSubmit(event); return false;" class="inline-form-grid">
           <div class="inline-field">
             <label for="inline-title">Task Title</label>
             <input type="text" id="inline-title" placeholder="e.g. Read 20 pages / Morning Run" required>
@@ -378,7 +378,7 @@
           <button class="close-btn" onclick="closeTaskModal()">&times;</button>
         </div>
 
-        <form id="add-task-form" onsubmit="handleSaveTask(event)">
+        <form id="add-task-form" onsubmit="handleSaveTask(event); return false;">
           
           <!-- TASK TYPE SELECTOR -->
           <div class="input-group">

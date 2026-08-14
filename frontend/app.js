@@ -354,7 +354,10 @@ function toggleDateInputVisibility() {
  * Handle Save Task Form Submit
  */
 async function handleSaveTask(event) {
-  event.preventDefault();
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
   const isSpecific = document.getElementById('radio-type-specific').checked;
   const taskType = isSpecific ? 'specific' : 'daily';
@@ -367,32 +370,39 @@ async function handleSaveTask(event) {
 
   if (!title) {
     showToast("Please enter a task title.", "warning");
-    return;
+    return false;
   }
 
   if (taskType === 'specific' && !dateVal) {
     showToast("Please select a date for the task.", "warning");
-    return;
+    return false;
   }
 
-  await createNewTask({
-    title,
-    type: taskType,
-    date: taskType === 'specific' ? dateVal : null,
-    category,
-    time,
-    notes
-  });
+  try {
+    await createNewTask({
+      title,
+      type: taskType,
+      date: taskType === 'specific' ? dateVal : null,
+      category,
+      time,
+      notes
+    });
 
-  closeTaskModal();
-  showToast(taskType === 'daily' ? "Daily habit created! Keep the streak alive 🔥" : "Task added for " + dateVal, "success");
+    closeTaskModal();
+    showToast(taskType === 'daily' ? "Daily habit created! Keep the streak alive 🔥" : "Task added for " + dateVal, "success");
 
-  refreshDashboard();
+    refreshDashboard();
 
-  const selModalKey = typeof window.selectedExpandedDateKey !== 'undefined' ? window.selectedExpandedDateKey : null;
-  if (selModalKey) {
-    openDateModal(selModalKey);
+    const selModalKey = typeof window.selectedExpandedDateKey !== 'undefined' ? window.selectedExpandedDateKey : null;
+    if (selModalKey) {
+      renderExpandedDateTasks(selModalKey);
+    }
+  } catch (err) {
+    console.error('Error saving task:', err);
+    showToast('Failed to save task', 'warning');
   }
+
+  return false;
 }
 
 /**
@@ -437,7 +447,11 @@ function toggleInlineDateInput() {
  * Handle Inline Quick Add Form Submission Directly on Dashboard
  */
 async function handleInlineTaskSubmit(event) {
-  event.preventDefault();
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   const title = document.getElementById('inline-title').value.trim();
   const taskType = document.getElementById('inline-type').value;
   const dateVal = document.getElementById('inline-date').value;
@@ -445,24 +459,30 @@ async function handleInlineTaskSubmit(event) {
 
   if (!title) {
     showToast("Please enter a task title.", "warning");
-    return;
+    return false;
   }
 
   const todayStr = typeof formatDateKey === 'function' ? formatDateKey(new Date()) : new Date().toISOString().split('T')[0];
   const targetDate = taskType === 'specific' ? (dateVal || todayStr) : null;
 
-  await createNewTask({
-    title: title,
-    type: taskType,
-    date: targetDate,
-    category: category,
-    time: '09:00',
-    notes: ''
-  });
+  try {
+    await createNewTask({
+      title: title,
+      type: taskType,
+      date: targetDate,
+      category: category,
+      time: '09:00',
+      notes: ''
+    });
 
-  document.getElementById('inline-title').value = '';
-  showToast(taskType === 'daily' ? "Daily habit created! 🔥" : "Task added for " + targetDate, "success");
-  refreshDashboard();
+    document.getElementById('inline-title').value = '';
+    showToast(taskType === 'daily' ? "Daily habit created! 🔥" : "Task added for " + targetDate, "success");
+    refreshDashboard();
+  } catch (err) {
+    console.error('Error saving inline task:', err);
+    showToast('Failed to save task', 'warning');
+  }
+
   return false;
 }
 
