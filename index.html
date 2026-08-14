@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskPulse - Daily Task & Habit Tracker</title>
+  <meta name="description" content="Track your daily tasks, build habit streaks, and manage your schedule with an interactive calendar.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+
+    <!-- AUTH SECTION (Login / Register) -->
+    <section id="auth-section" class="auth-wrapper">
+      <div class="auth-backdrop"></div>
+      <div class="auth-card glass-panel">
+        <div class="brand-header">
+          <div class="brand-logo">
+            <svg class="flame-icon animated-flame" viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+              <path d="M12 23c-4.97 0-9-3.58-9-8 0-4.19 3.43-7.65 6.1-10.22.45-.43 1.18-.12 1.18.5 0 2.21 1.79 4 4 4 1.1 0 2.1-.45 2.83-1.17.38-.38 1.02-.17 1.07.36C18.66 13.06 19 14.5 19 15c0 4.42-4.03 8-7 8zm0-18.5c-2.3 2.37-5 5.3-5 8.5 0 2.76 2.24 5 5 5s5-2.24 5-5c0-1.5-.5-2.8-1.4-3.8-.4-.4-1.1-.3-1.3.2-.5 1.1-1.6 1.8-2.8 1.8-1.1 0-2-.9-2-2 0-.94.43-1.78 1.1-2.33.4-.33.3-1-.2-1.37z"/>
+            </svg>
+          </div>
+          <h1>Task<span class="gradient-text">Pulse</span></h1>
+          <p class="brand-subtitle">Build unbreakable habits & conquer your day</p>
+        </div>
+
+        <!-- AUTH TABS -->
+        <div class="auth-tabs">
+          <button id="tab-login" class="tab-btn active" onclick="switchAuthTab('login')">Login</button>
+          <button id="tab-register" class="tab-btn" onclick="switchAuthTab('register')">Register</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+          <div class="input-group">
+            <label for="login-email">Email or Username</label>
+            <div class="input-wrapper">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <input type="text" id="login-email" placeholder="Enter your email or username" required>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="login-password">Password</label>
+            <div class="input-wrapper">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <input type="password" id="login-password" placeholder="Enter your password" required>
+            </div>
+          </div>
+          <div id="login-error" class="error-alert hidden"></div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <span>Sign In</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="form-divider"><span>or</span></div>
+          <button type="button" class="btn btn-ghost btn-full" onclick="loginAsGuest()">
+            ⚡ Try as Demo Guest
+          </button>
+        </form>
+
+        <!-- REGISTER FORM -->
+        <form id="register-form" class="auth-form hidden-form" onsubmit="handleRegister(event)">
+          <div class="input-group">
+            <label for="reg-name">Full Name</label>
+            <div class="input-wrapper">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <input type="text" id="reg-name" placeholder="John Doe" required>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="reg-email">Email Address</label>
+            <div class="input-wrapper">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <input type="email" id="reg-email" placeholder="john@example.com" required>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="reg-password">Create Password</label>
+            <div class="input-wrapper">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <input type="password" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+            </div>
+          </div>
+          <div id="register-error" class="error-alert hidden"></div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <span>Create Account</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- DASHBOARD MAIN SECTION (Post Login) -->
+    <section id="dashboard-section" class="dashboard-wrapper hidden">
+      
+      <!-- TOP NAVIGATION BAR -->
+      <header class="top-navbar glass-panel">
+        <div class="nav-brand">
+          <svg class="flame-icon animated-flame" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M12 23c-4.97 0-9-3.58-9-8 0-4.19 3.43-7.65 6.1-10.22.45-.43 1.18-.12 1.18.5 0 2.21 1.79 4 4 4 1.1 0 2.1-.45 2.83-1.17.38-.38 1.02-.17 1.07.36C18.66 13.06 19 14.5 19 15c0 4.42-4.03 8-7 8z"/>
+          </svg>
+          <span class="nav-title">Task<span class="gradient-text">Pulse</span></span>
+        </div>
+
+        <!-- TOP ADD TASK BUTTONS -->
+        <div class="top-actions">
+          <button class="btn btn-action btn-day-task" onclick="openAddTaskModal('specific')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><line x1="12" y1="14" x2="12" y2="18"></line><line x1="10" y1="16" x2="14" y2="16"></line></svg>
+            <span>+ Add Task for Date</span>
+          </button>
+          <button class="btn btn-action btn-daily-task" onclick="openAddTaskModal('daily')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+            <span>+ Add Daily Habit</span>
+          </button>
+        </div>
+
+        <!-- USER PROFILE & LOGOUT -->
+        <div class="user-menu">
+          <div class="notification-bell-wrapper">
+            <button class="bell-btn" onclick="toggleNotificationsPanel()" title="Notifications">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span id="bell-badge" class="bell-badge hidden">0</span>
+            </button>
+            <div id="notifications-dropdown" class="notifications-dropdown glass-panel hidden">
+              <div class="notif-header">
+                <h4>Reminders & Notifications</h4>
+                <button class="text-btn" onclick="requestNotificationPermission()">Enable Desktop Alerts</button>
+              </div>
+              <div id="notif-list" class="notif-list">
+                <p class="empty-notif">No pending reminders right now!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-chip">
+            <div class="avatar" id="user-avatar">U</div>
+            <span class="user-name" id="user-display-name">User</span>
+            <button class="logout-btn" onclick="handleLogout()" title="Log out">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- STREAK BANNER (REQ 3, 4, 5) -->
+      <div class="streak-banner glass-panel">
+        <div class="streak-card current-streak-box">
+          <div class="streak-icon-wrap">
+            <div class="flame-glow"></div>
+            <svg class="flame-icon hero-flame" viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+              <path d="M12 23c-4.97 0-9-3.58-9-8 0-4.19 3.43-7.65 6.1-10.22.45-.43 1.18-.12 1.18.5 0 2.21 1.79 4 4 4 1.1 0 2.1-.45 2.83-1.17.38-.38 1.02-.17 1.07.36C18.66 13.06 19 14.5 19 15c0 4.42-4.03 8-7 8z"/>
+            </svg>
+          </div>
+          <div class="streak-details">
+            <span class="streak-label">CURRENT DAILY STREAK</span>
+            <div class="streak-value-row">
+              <span id="current-streak-val" class="streak-number">0</span>
+              <span class="streak-days-text">Days Streak 🔥</span>
+            </div>
+            <p id="streak-status-desc" class="streak-desc">Complete today's daily habits to keep your streak burning!</p>
+          </div>
+        </div>
+
+        <div class="streak-metrics-grid">
+          <div class="metric-pill">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+            <div>
+              <span class="metric-val" id="best-streak-val">0 Days</span>
+              <span class="metric-lbl">Best Record</span>
+            </div>
+          </div>
+          <div class="metric-pill">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <div>
+              <span class="metric-val" id="today-completion-val">0%</span>
+              <span class="metric-lbl">Today's Habits</span>
+            </div>
+          </div>
+          <div class="metric-pill" id="streak-alert-pill">
+            <div class="pulse-dot active"></div>
+            <div>
+              <span class="metric-val" id="streak-warning-text">Active</span>
+              <span class="metric-lbl">Streak Health</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT LAYOUT: CALENDAR + TODAY QUICK HABITS -->
+      <div class="dashboard-content">
+
+        <!-- LEFT/MAIN: CALENDAR VIEW (REQ 2, 6, 7) -->
+        <main class="calendar-container glass-panel">
+          
+          <!-- CALENDAR HEADER CONTROLS -->
+          <div class="calendar-header">
+            <div class="calendar-title-group">
+              <h2 id="calendar-month-year">August 2026</h2>
+              <span class="badge-hint">Click any date to view or add tasks</span>
+            </div>
+
+            <div class="calendar-nav-btn-group">
+              <button class="btn btn-icon" onclick="changeMonth(-1)" title="Previous Month">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <button class="btn btn-today" onclick="goToToday()">Today</button>
+              <button class="btn btn-icon" onclick="changeMonth(1)" title="Next Month">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- WEEKDAY HEADERS -->
+          <div class="weekdays-grid">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+
+          <!-- CALENDAR DAYS GRID -->
+          <div id="calendar-days-grid" class="calendar-grid">
+            <!-- Days rendered dynamically by calendar.js -->
+          </div>
+        </main>
+
+        <!-- RIGHT SIDEBAR: TODAY'S QUICK HABIT CHECKLIST -->
+        <aside class="sidebar-tasks glass-panel">
+          <div class="sidebar-header">
+            <h3>⚡ Today's Daily Habits</h3>
+            <span class="date-tag" id="sidebar-today-date">Aug 14</span>
+          </div>
+
+          <div id="today-habits-list" class="today-habits-list">
+            <!-- Habit list items rendered dynamically -->
+          </div>
+
+          <button class="btn btn-secondary btn-full add-habit-sidebar-btn" onclick="openAddTaskModal('daily')">
+            + New Daily Habit
+          </button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- EXPANDED DATE MODAL / DRAWER (REQ 6 & 7: Date expand & show/add tasks) -->
+    <div id="date-detail-modal" class="modal-overlay hidden" onclick="closeDateModalOnBackdrop(event)">
+      <div class="modal-card glass-panel date-expand-card">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="calendar-day-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            </div>
+            <div>
+              <h2 id="expanded-date-title">Date Details</h2>
+              <span id="expanded-date-subtitle" class="subtext">Tasks and habits for this day</span>
+            </div>
+          </div>
+          <button class="close-btn" onclick="closeDateModal()">&times;</button>
+        </div>
+
+        <div class="expanded-modal-body">
+          <!-- QUICK TYPE SELECTOR TO ADD NEW TASK TO THIS EXPANDED DATE -->
+          <div class="expanded-date-actions">
+            <span class="action-label">Add task to this date:</span>
+            <div class="action-btns-row">
+              <button class="btn btn-sm btn-primary" onclick="openTaskFormForSelectedDate('specific')">
+                + Task for this Date
+              </button>
+              <button class="btn btn-sm btn-secondary" onclick="openTaskFormForSelectedDate('daily')">
+                + New Daily Habit
+              </button>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <!-- TASK LISTING FOR THIS EXPANDED DATE -->
+          <div class="tasks-sections-container">
+            
+            <!-- SECTION 1: DAILY HABITS ON THIS DATE -->
+            <div class="task-category-block">
+              <div class="block-title">
+                <span class="badge badge-daily">🔄 Daily Habit Tasks</span>
+                <span id="expanded-daily-count" class="count-badge">0</span>
+              </div>
+              <div id="expanded-daily-list" class="expanded-task-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- SECTION 2: SPECIFIC DATE TASKS -->
+            <div class="task-category-block">
+              <div class="block-title">
+                <span class="badge badge-date">📅 Specific Date Tasks</span>
+                <span id="expanded-date-count" class="count-badge">0</span>
+              </div>
+              <div id="expanded-specific-list" class="expanded-task-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREATE/EDIT TASK MODAL -->
+    <div id="add-task-modal" class="modal-overlay hidden" onclick="closeTaskModalOnBackdrop(event)">
+      <div class="modal-card glass-panel">
+        <div class="modal-header">
+          <h2 id="task-modal-title">Create New Task</h2>
+          <button class="close-btn" onclick="closeTaskModal()">&times;</button>
+        </div>
+
+        <form id="add-task-form" onsubmit="handleSaveTask(event)">
+          
+          <!-- TASK TYPE SELECTOR -->
+          <div class="input-group">
+            <label>Task Type</label>
+            <div class="task-type-selector">
+              <label class="type-option" id="type-opt-specific">
+                <input type="radio" name="taskType" value="specific" id="radio-type-specific" onchange="toggleDateInputVisibility()">
+                <div class="type-card">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <div>
+                    <strong>Task for Specific Date</strong>
+                    <span>One-time task for a chosen day</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="type-option" id="type-opt-daily">
+                <input type="radio" name="taskType" value="daily" id="radio-type-daily" onchange="toggleDateInputVisibility()">
+                <div class="type-card">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                  <div>
+                    <strong>Daily Recurring Habit</strong>
+                    <span>Repeats every day & tracks streak 🔥</span>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- TASK TITLE -->
+          <div class="input-group">
+            <label for="task-title">Task Title</label>
+            <input type="text" id="task-title" placeholder="e.g. Read 20 pages / Morning Run" required>
+          </div>
+
+          <!-- DATE PICKER (Shown if specific date task) -->
+          <div class="input-group" id="group-task-date">
+            <label for="task-date">Select Date</label>
+            <input type="date" id="task-date">
+          </div>
+
+          <!-- CATEGORY & REMINDER TIME -->
+          <div class="input-row">
+            <div class="input-group">
+              <label for="task-category">Category</label>
+              <select id="task-category">
+                <option value="Health">💪 Health & Fitness</option>
+                <option value="Productivity">⚡ Productivity & Work</option>
+                <option value="Learning">📚 Learning & Books</option>
+                <option value="Mindfulness">🧘 Mindfulness & Self</option>
+                <option value="General">📌 General</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="task-time">Daily Reminder Time</label>
+              <input type="time" id="task-time" value="09:00">
+            </div>
+          </div>
+
+          <!-- NOTES / DESC -->
+          <div class="input-group">
+            <label for="task-notes">Notes (Optional)</label>
+            <input type="text" id="task-notes" placeholder="Additional details or goal targets">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost" onclick="closeTaskModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="toast-container"></div>
+
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="streak.js"></script>
+  <script src="calendar.js"></script>
+  <script src="notifications.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
