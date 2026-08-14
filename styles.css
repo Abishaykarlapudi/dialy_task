@@ -1344,6 +1344,97 @@ select option {
   100% { transform: translateY(0); opacity: 1; }
 }
 
+/* QUICK TASK ADD BANNER */
+.quick-add-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12));
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: var(--radius-lg);
+}
+
+.quick-add-title h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.quick-add-title span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.quick-add-btns {
+  display: flex;
+  gap: 12px;
+}
+
+/* FLOATING ACTION BUTTON (FAB) */
+.fab-wrapper {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.fab-main-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--flame-start), var(--primary));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.5);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.fab-main-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.7);
+}
+
+.fab-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fabPop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fab-item {
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
+.fab-date {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+}
+
+.fab-daily {
+  background: linear-gradient(135deg, var(--flame-start), var(--flame-end));
+  color: #fff;
+}
+
+@keyframes fabPop {
+  0% { opacity: 0; transform: translateY(10px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* ==========================================================================
    RESPONSIVE LAYOUTS
    ========================================================================== */

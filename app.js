@@ -416,6 +416,16 @@ async function deleteTask(taskId, dateKey) {
   }
 }
 
+/**
+ * Toggle Floating Action Button (FAB) Menu
+ */
+function toggleFabMenu() {
+  const menu = document.getElementById('fab-menu');
+  if (menu) {
+    menu.classList.toggle('hidden');
+  }
+}
+
 // Global App Initialization
 document.addEventListener('DOMContentLoaded', () => {
   initAuth();
