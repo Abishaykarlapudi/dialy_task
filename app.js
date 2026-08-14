@@ -423,6 +423,49 @@ async function deleteTask(taskId, dateKey) {
 }
 
 /**
+ * Toggle Inline Date Input Visibility
+ */
+function toggleInlineDateInput() {
+  const typeSelect = document.getElementById('inline-type');
+  const dateGroup = document.getElementById('inline-date-group');
+  if (typeSelect && dateGroup) {
+    dateGroup.style.display = typeSelect.value === 'specific' ? 'flex' : 'none';
+  }
+}
+
+/**
+ * Handle Inline Quick Add Form Submission Directly on Dashboard
+ */
+async function handleInlineTaskSubmit(event) {
+  event.preventDefault();
+  const title = document.getElementById('inline-title').value.trim();
+  const taskType = document.getElementById('inline-type').value;
+  const dateVal = document.getElementById('inline-date').value;
+  const category = document.getElementById('inline-category').value;
+
+  if (!title) {
+    showToast("Please enter a task title.", "warning");
+    return;
+  }
+
+  const todayStr = typeof formatDateKey === 'function' ? formatDateKey(new Date()) : new Date().toISOString().split('T')[0];
+  const targetDate = taskType === 'specific' ? (dateVal || todayStr) : null;
+
+  await createNewTask({
+    title: title,
+    type: taskType,
+    date: targetDate,
+    category: category,
+    time: '09:00',
+    notes: ''
+  });
+
+  document.getElementById('inline-title').value = '';
+  showToast(taskType === 'daily' ? "Daily habit created! 🔥" : "Task added for " + targetDate, "success");
+  refreshDashboard();
+}
+
+/**
  * Toggle Floating Action Button (FAB) Menu
  */
 function toggleFabMenu() {
@@ -435,4 +478,9 @@ function toggleFabMenu() {
 // Global App Initialization
 document.addEventListener('DOMContentLoaded', () => {
   initAuth();
+  // Set default inline date to today
+  const inlineDateEl = document.getElementById('inline-date');
+  if (inlineDateEl) {
+    inlineDateEl.value = typeof formatDateKey === 'function' ? formatDateKey(new Date()) : new Date().toISOString().split('T')[0];
+  }
 });

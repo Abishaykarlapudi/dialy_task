@@ -189,20 +189,49 @@
         </div>
       </div>
 
-      <!-- QUICK TASK CREATION BAR ABOVE CALENDAR -->
-      <div class="quick-add-banner glass-panel">
-        <div class="quick-add-title">
-          <h3>⚡ Quick Add Task</h3>
-          <span>What would you like to track?</span>
+      <!-- INLINE DIRECT QUICK ADD TASK FORM (ALWAYS VISIBLE & WORKING DIRECTLY ON PAGE) -->
+      <div class="inline-add-card glass-panel">
+        <div class="inline-card-header">
+          <h3>⚡ Quick Add Task Directly</h3>
+          <span class="subtext">Add a Day Task or Daily Habit right here!</span>
         </div>
-        <div class="quick-add-btns">
-          <button class="btn btn-primary" onclick="openAddTaskModal('specific')">
-            📅 Add Task for Specific Date
-          </button>
-          <button class="btn btn-daily-task" onclick="openAddTaskModal('daily')">
-            🔄 Add Daily Recurring Habit
-          </button>
-        </div>
+
+        <form id="inline-add-form" onsubmit="handleInlineTaskSubmit(event)" class="inline-form-grid">
+          <div class="inline-field">
+            <label for="inline-title">Task Title</label>
+            <input type="text" id="inline-title" placeholder="e.g. Read 20 pages / Morning Run" required>
+          </div>
+
+          <div class="inline-field">
+            <label for="inline-type">Task Type</label>
+            <select id="inline-type" onchange="toggleInlineDateInput()">
+              <option value="specific">📅 Day Task (Specific Date)</option>
+              <option value="daily">🔄 Daily Task (Everyday Habit)</option>
+            </select>
+          </div>
+
+          <div class="inline-field" id="inline-date-group">
+            <label for="inline-date">Date</label>
+            <input type="date" id="inline-date">
+          </div>
+
+          <div class="inline-field">
+            <label for="inline-category">Category</label>
+            <select id="inline-category">
+              <option value="Health">💪 Health</option>
+              <option value="Productivity">⚡ Work</option>
+              <option value="Learning">📚 Learning</option>
+              <option value="Mindfulness">🧘 Self</option>
+              <option value="General">📌 General</option>
+            </select>
+          </div>
+
+          <div class="inline-field inline-btn-field">
+            <button type="submit" class="btn btn-primary btn-full">
+              <span>➕ Save Task</span>
+            </button>
+          </div>
+        </form>
       </div>
 
       <!-- MAIN CONTENT LAYOUT: CALENDAR + TODAY QUICK HABITS -->
