@@ -112,7 +112,7 @@ function createCalendarDayCell(dayNum, dateKey, isOtherMonth, isToday, tasks, co
   if (totalTasksOnDate > 0) {
     summaryText = `${totalCompleted}/${totalTasksOnDate} done`;
   } else {
-    summaryText = `No tasks`;
+    summaryText = `+ Add Task`;
   }
 
   cell.innerHTML = `
@@ -123,7 +123,10 @@ function createCalendarDayCell(dayNum, dateKey, isOtherMonth, isToday, tasks, co
     <div class="cell-tasks-indicator">
       ${dotsHTML}
     </div>
-    <div class="cell-summary-text">${summaryText}</div>
+    <div class="cell-bottom-row">
+      <span class="cell-summary-text">${summaryText}</span>
+      <button class="cell-add-btn" onclick="event.stopPropagation(); openAddTaskModal('specific', '${dateKey}');" title="Add Task for this Date">+</button>
+    </div>
   `;
 
   return cell;
