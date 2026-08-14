@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: dialy-task-tracker
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://rocksun:Test12345@job-portal.r8efxop.mongodb.net/dialy_task?appName=dialy_task
+      - key: JWT_SECRET
+        value: taskpulse_super_secret_key_2026
+      - key: NODE_ENV
+        value: production
